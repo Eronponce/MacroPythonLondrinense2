@@ -1,25 +1,40 @@
-import pyautogui
-import keyboard
-largura_foto = 720
-captura_vermelho =(624, 806, largura_foto,3 )
-captura_preto
-def identifica_vermelho(imagem):
-    for x in range(0, largura_foto ):
-        if imagem.getpixel((x , 2)) == (255, 0, 0):
-            return(x)
+import pyautogui #bblioteca para identificaçãod e eventos no computador baixe com pip install pyautogui
+import keyboard #biblioteca para identificar eventos no teclado baixe com pip install keyboard
 
 
-ecra = pyautogui.screenshot(region=captura_vermelho)
+pyautogui.sleep(2)
+altura = 4
+largura = 300
+captura =(226, 865, largura, altura)
+
+ecra = pyautogui.screenshot(region=captura)
+
 ecra.save('ecra.png')
-while (not (keyboard.is_pressed('m'))):
-    cordenada_preta = 0
-    cordenada_preta += 1
-    cordenada_vermelho = identifica_vermelho(ecra)
-    print(cordenada_vermelho)
-    while cordenada_preta != cordenada_vermelho:
-        pyautogui.moveTo(624, 806)
+
+def identifica_vermelho(imagem):
+    altura_imagem , largura_imagem = imagem.size
+    for x in range(0, altura_imagem):
+        for y in range(0, largura_imagem):
+            if imagem.getpixel((x, y)) == (255, 0, 0):
+                return x, y
+
+def identifica_preto(imagem):
+    
+    while imagem.getpixel((1, 1)) != (0,0,0):
+        imagem = pyautogui.screenshot(region =(213 , 865 +40 -distancia ,2,2))
         pyautogui.mouseDown()
     pyautogui.mouseUp()
 
 
-
+while not keyboard.is_pressed('m'):
+    pixel_vermelho = identifica_vermelho(ecra)
+    if pixel_vermelho:
+        distancia = pixel_vermelho[0]
+        print(distancia)
+        pixel_preto = pyautogui.screenshot(region =(213 , 865 +40 -distancia ,2,2))
+        identifica_preto(pixel_preto)
+        
+        
+    pyautogui.sleep(3)
+    pyautogui.mouseUp()
+    ecra = pyautogui.screenshot(region=captura)
